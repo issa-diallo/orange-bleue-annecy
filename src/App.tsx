@@ -16,7 +16,7 @@ function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-white/82 text-foreground shadow-sm backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-[min(1180px,92vw)] items-center justify-between gap-3">
-        <a href="/" className="shrink-0 font-display text-lg font-black tracking-wide" onClick={closeMenu}>
+        <a href="#" className="shrink-0 font-display text-lg font-black tracking-wide" onClick={closeMenu}>
           <img
             src={orangeBleueLogo}
             alt="Orange Bleue Enseigne & Publicité"
@@ -24,19 +24,19 @@ function Header() {
           />
         </a>
         <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/70 md:flex">
-          <a className="transition hover:text-foreground" href="/#services">
+          <a className="transition hover:text-foreground" href="#services">
             Services
           </a>
-          <a className="transition hover:text-foreground" href="/#realisations">
+          <a className="transition hover:text-foreground" href="#realisations">
             Réalisations
           </a>
-          <a className="transition hover:text-foreground" href="/#devis">
+          <a className="transition hover:text-foreground" href="#devis">
             Devis
           </a>
         </nav>
         <div className="flex items-center gap-2">
           <a
-            href="/#devis"
+            href="#devis"
             className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-bold text-primary-foreground transition hover:bg-primary/90"
             onClick={closeMenu}
           >
@@ -62,13 +62,13 @@ function Header() {
         ].join(" ")}
       >
         <div className="flex flex-col py-2">
-          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="/#services" onClick={closeMenu}>
+          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="#services" onClick={closeMenu}>
             Services
           </a>
-          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="/#realisations" onClick={closeMenu}>
+          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="#realisations" onClick={closeMenu}>
             Réalisations
           </a>
-          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="/#devis" onClick={closeMenu}>
+          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="#devis" onClick={closeMenu}>
             Devis
           </a>
         </div>
@@ -133,7 +133,7 @@ function RealisationsSection() {
               professionnel à se projeter rapidement.
             </p>
           </div>
-          <a className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.18em] text-primary" href="/#devis">
+          <a className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.18em] text-primary" href="#devis">
             Lancer un projet
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
@@ -194,7 +194,7 @@ function CtaSection() {
             Demander un devis
             <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </Button>
-          <a href="/#realisations" className="inline-flex">
+          <a href="#realisations" className="inline-flex">
             <Button type="button" size="lg" variant="secondary" className="w-full">
               Voir nos réalisations
               <GalleryVerticalEnd className="h-5 w-5" aria-hidden="true" />

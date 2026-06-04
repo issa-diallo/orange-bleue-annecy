@@ -36,7 +36,7 @@ const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * 
 function FlipCard({ src, label, index, target, size }: FlipCardProps) {
   return (
     <motion.a
-      href="/#realisations"
+      href="#realisations"
       aria-label={`Voir la réalisation ${label}`}
       animate={{
         x: target.x,
@@ -335,14 +335,14 @@ export function ScrollMorphHero() {
           </p>
           <div className="pointer-events-auto mt-6 flex flex-wrap justify-center gap-3 md:mt-8">
             <a
-              href="/#realisations"
+              href="#realisations"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-primary px-6 text-base font-bold text-primary-foreground shadow-premium transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Voir les réalisations
               <ArrowDownRight className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="/#devis"
+              href="#devis"
               className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-white px-6 text-base font-bold text-foreground shadow-sm backdrop-blur transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Demander un devis
