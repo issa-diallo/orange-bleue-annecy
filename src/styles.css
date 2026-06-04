@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 195 18% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 195 18% 9%;
+    --muted: 188 18% 93%;
+    --muted-foreground: 195 10% 39%;
+    --primary: 183 78% 50%;
+    --primary-foreground: 195 18% 8%;
+    --border: 188 18% 86%;
+    --input: 188 18% 86%;
+    --ring: 183 78% 50%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    margin: 0;
+  }
+
+  img {
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .section-kicker {
+    @apply text-xs font-black uppercase tracking-[0.22em] text-primary;
+  }
+
+  .section-title {
+    @apply mt-4 font-display text-[clamp(2.35rem,5vw,4.8rem)] font-black leading-[0.96] text-foreground;
+  }
+}
+
+@supports (text-wrap: balance) {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
