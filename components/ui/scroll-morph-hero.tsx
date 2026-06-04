@@ -18,17 +18,22 @@ type FlipCardProps = {
   label: string;
   index: number;
   target: CardTarget;
+  size: {
+    width: number;
+    height: number;
+  };
 };
 
 const IMG_WIDTH = 60;
 const IMG_HEIGHT = 85;
 const TOTAL_IMAGES = 20;
-const MAX_SCROLL = 3000;
-const MORPH_SCROLL = 650;
+const MOBILE_TOTAL_IMAGES = 8;
+const MAX_SCROLL = 1500;
+const MORPH_SCROLL = 420;
 
 const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
 
-function FlipCard({ src, label, index, target }: FlipCardProps) {
+function FlipCard({ src, label, index, target, size }: FlipCardProps) {
   return (
     <motion.a
       href="/#realisations"
@@ -47,8 +52,8 @@ function FlipCard({ src, label, index, target }: FlipCardProps) {
       }}
       style={{
         position: "absolute",
-        width: IMG_WIDTH,
-        height: IMG_HEIGHT,
+        width: size.width,
+        height: size.height,
         transformStyle: "preserve-3d",
         perspective: "1000px",
       }}
@@ -106,9 +111,16 @@ export function ScrollMorphHero() {
     [],
   );
 
+  const isMobile = containerSize.width > 0 && containerSize.width < 768;
+  const visibleHeroItems = useMemo(
+    () => heroItems.slice(0, isMobile ? MOBILE_TOTAL_IMAGES : TOTAL_IMAGES),
+    [heroItems, isMobile],
+  );
+  const cardSize = isMobile ? { width: 40, height: 57 } : { width: IMG_WIDTH, height: IMG_HEIGHT };
+
   const scatterPositions = useMemo(
     () =>
-      heroItems.map((_, index) => {
+      visibleHeroItems.map((_, index) => {
         const angle = index * 1.91;
         return {
           x: Math.cos(angle) * (540 + (index % 4) * 130),
@@ -118,7 +130,7 @@ export function ScrollMorphHero() {
           opacity: 0,
         };
       }),
-    [heroItems],
+    [visibleHeroItems],
   );
 
   const morphProgress = useTransform(virtualScroll, [0, MORPH_SCROLL], [0, 1]);
@@ -237,14 +249,48 @@ export function ScrollMorphHero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[92svh] overflow-hidden bg-white text-foreground"
+      className="relative min-h-[100svh] overflow-hidden bg-white text-foreground md:min-h-[92svh]"
       aria-label="Présentation Orange Bleue"
     >
       <div className="absolute inset-0 bg-white" />
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.92))]" />
 
-      <div className="relative flex min-h-[92svh] w-full flex-col items-center justify-center pt-16">
-        <div className="pointer-events-none absolute top-1/2 z-0 flex -translate-y-1/2 flex-col items-center justify-center px-5 text-center">
+      <div className="relative flex min-h-[100svh] w-full flex-col items-center justify-center pt-16 md:min-h-[92svh]">
+        <div className="pointer-events-none absolute inset-x-0 top-[24%] z-10 flex flex-col items-center px-7 text-center md:hidden">
+          <motion.h1
+            initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
+            animate={
+              introPhase === "circle" && morphValue < 0.5
+                ? { opacity: 1 - morphValue * 2, y: 0, filter: "blur(0px)" }
+                : { opacity: 0, filter: "blur(10px)" }
+            }
+            transition={{ duration: 1 }}
+            className="max-w-[330px] font-sans text-[1.55rem] font-semibold leading-[1.08] text-foreground"
+          >
+            Donner forme a votre visibilite.
+          </motion.h1>
+        </div>
+
+        <div className="pointer-events-none absolute inset-x-0 top-[70%] z-10 flex flex-col items-center px-8 text-center md:hidden">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 0.78 - morphValue, y: 0 } : { opacity: 0 }}
+            transition={{ duration: 1, delay: 0.12 }}
+            className="max-w-[300px] text-[0.68rem] font-bold uppercase leading-5 tracking-[0.17em] text-foreground/64"
+          >
+            Enseignes, covering et signaletique fabriques pour marquer durablement.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={introPhase === "circle" && morphValue < 0.5 ? { opacity: 0.74 - morphValue } : { opacity: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="mt-4 text-[0.68rem] font-black uppercase tracking-[0.22em] text-primary"
+          >
+            Faites défiler pour explorer
+          </motion.p>
+        </div>
+
+        <div className="pointer-events-none absolute top-1/2 z-0 hidden -translate-y-1/2 flex-col items-center justify-center px-5 text-center md:flex">
           <motion.h1
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
             animate={
@@ -274,7 +320,7 @@ export function ScrollMorphHero() {
 
         <motion.div
           style={{ opacity: contentOpacity, y: contentY }}
-          className="pointer-events-none absolute top-[12%] z-20 flex w-[min(940px,92vw)] flex-col items-center justify-center text-center"
+          className="pointer-events-none absolute top-[8%] z-20 flex w-[min(940px,92vw)] flex-col items-center justify-center text-center md:top-[12%]"
         >
           <div className="mb-5 inline-flex items-center gap-2 rounded-md border border-border bg-white/88 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] text-foreground/72 shadow-sm backdrop-blur">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
@@ -287,7 +333,7 @@ export function ScrollMorphHero() {
             Enseignes, covering, vitrophanie et signalétique : une fabrication locale pensée pour rendre votre
             entreprise visible, durablement.
           </p>
-          <div className="pointer-events-auto mt-8 flex flex-wrap justify-center gap-3">
+          <div className="pointer-events-auto mt-6 flex flex-wrap justify-center gap-3 md:mt-8">
             <a
               href="/#realisations"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-primary px-6 text-base font-bold text-primary-foreground shadow-premium transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -304,27 +350,26 @@ export function ScrollMorphHero() {
           </div>
         </motion.div>
 
-        <div className="relative flex min-h-[92svh] w-full items-center justify-center">
-          {heroItems.map(({ src, label }, index) => {
+        <div className="relative flex min-h-[100svh] w-full items-center justify-center md:min-h-[92svh]">
+          {visibleHeroItems.map(({ src, label }, index) => {
             let target: CardTarget = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
             if (introPhase === "scatter") {
               target = scatterPositions[index];
             } else if (introPhase === "line") {
-              const lineSpacing = containerSize.width < 768 ? 42 : 70;
-              const lineTotalWidth = heroItems.length * lineSpacing;
+              const lineSpacing = isMobile ? 36 : 70;
+              const lineTotalWidth = (visibleHeroItems.length - 1) * lineSpacing;
               target = {
                 x: index * lineSpacing - lineTotalWidth / 2,
-                y: containerSize.width < 768 ? 92 : 0,
+                y: isMobile ? 96 : 0,
                 rotation: 0,
-                scale: containerSize.width < 768 ? 0.82 : 1,
+                scale: isMobile ? 0.74 : 1,
                 opacity: 1,
               };
             } else {
-              const isMobile = containerSize.width < 768;
               const minDimension = Math.min(containerSize.width || 1, containerSize.height || 1);
-              const circleRadius = Math.min(minDimension * 0.34, 330);
-              const circleAngle = (index / heroItems.length) * 360;
+              const circleRadius = Math.min(minDimension * (isMobile ? 0.26 : 0.34), isMobile ? 100 : 330);
+              const circleAngle = (index / visibleHeroItems.length) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
               const circlePos = {
                 x: Math.cos(circleRad) * circleRadius,
@@ -333,12 +378,12 @@ export function ScrollMorphHero() {
               };
 
               const baseRadius = Math.min(containerSize.width || 1, (containerSize.height || 1) * 1.55);
-              const arcRadius = baseRadius * (isMobile ? 1.36 : 1.08);
-              const arcApexY = (containerSize.height || 1) * (isMobile ? 0.4 : 0.28);
+              const arcRadius = baseRadius * (isMobile ? 0.98 : 1.08);
+              const arcApexY = (containerSize.height || 1) * (isMobile ? 0.2 : 0.28);
               const arcCenterY = arcApexY + arcRadius;
-              const spreadAngle = isMobile ? 104 : 132;
+              const spreadAngle = isMobile ? 92 : 132;
               const startAngle = -90 - spreadAngle / 2;
-              const step = spreadAngle / (heroItems.length - 1);
+              const step = spreadAngle / (visibleHeroItems.length - 1);
               const scrollProgress = Math.min(Math.max(rotateValue / 360, 0), 1);
               const boundedRotation = -scrollProgress * spreadAngle * 0.78;
               const currentArcAngle = startAngle + index * step + boundedRotation;
@@ -347,7 +392,7 @@ export function ScrollMorphHero() {
                 x: Math.cos(arcRad) * arcRadius + parallaxValue,
                 y: Math.sin(arcRad) * arcRadius + arcCenterY,
                 rotation: currentArcAngle + 90,
-                scale: isMobile ? 1.28 : 1.78,
+                scale: isMobile ? 0.9 : 1.78,
               };
 
               target = {
@@ -359,7 +404,16 @@ export function ScrollMorphHero() {
               };
             }
 
-            return <FlipCard key={`${label}-${index}`} src={src} label={label} index={index} target={target} />;
+            return (
+              <FlipCard
+                key={`${label}-${index}`}
+                src={src}
+                label={label}
+                index={index}
+                target={target}
+                size={cardSize}
+              />
+            );
           })}
         </div>
       </div>

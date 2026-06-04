@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, Building2, Car, GalleryVerticalEnd, MapPin, Printer, SignpostBig } from "lucide-react";
+import { ArrowRight, Building2, Car, GalleryVerticalEnd, MapPin, Menu, Printer, SignpostBig, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { FilterTabs } from "@/components/ui/tabs";
@@ -10,10 +10,13 @@ import orangeBleueLogo from "../assets/hero/main-logo-retina.png";
 const serviceIcons = [SignpostBig, Car, MapPin, Printer] as const;
 
 function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-white/82 text-foreground shadow-sm backdrop-blur-xl">
-      <div className="mx-auto flex h-16 w-[min(1180px,92vw)] items-center justify-between">
-        <a href="/" className="font-display text-lg font-black tracking-wide">
+      <div className="mx-auto flex h-16 w-[min(1180px,92vw)] items-center justify-between gap-3">
+        <a href="/" className="shrink-0 font-display text-lg font-black tracking-wide" onClick={closeMenu}>
           <img
             src={orangeBleueLogo}
             alt="Orange Bleue Enseigne & Publicité"
@@ -31,13 +34,45 @@ function Header() {
             Devis
           </a>
         </nav>
-        <a
-          href="/#devis"
-          className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-bold text-primary-foreground transition hover:bg-primary/90"
-        >
-          Projet
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="/#devis"
+            className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-bold text-primary-foreground transition hover:bg-primary/90"
+            onClick={closeMenu}
+          >
+            Projet
+          </a>
+          <button
+            type="button"
+            className="grid h-10 w-10 place-items-center rounded-md border border-border bg-white text-foreground shadow-sm transition hover:border-primary hover:text-primary md:hidden"
+            aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setIsMenuOpen((open) => !open)}
+          >
+            {isMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          </button>
+        </div>
       </div>
+      <nav
+        id="mobile-navigation"
+        className={[
+          "mx-auto w-[min(1180px,92vw)] overflow-hidden border-t border-border text-sm font-semibold text-foreground/78 transition-[max-height,opacity] duration-200 md:hidden",
+          isMenuOpen ? "max-h-48 opacity-100" : "max-h-0 opacity-0",
+        ].join(" ")}
+      >
+        <div className="flex flex-col py-2">
+          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="/#services" onClick={closeMenu}>
+            Services
+          </a>
+          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="/#realisations" onClick={closeMenu}>
+            Réalisations
+          </a>
+          <a className="rounded-md px-3 py-3 transition hover:bg-muted hover:text-foreground" href="/#devis" onClick={closeMenu}>
+            Devis
+          </a>
+        </div>
+      </nav>
     </header>
   );
 }
