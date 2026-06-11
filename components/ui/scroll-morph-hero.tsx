@@ -290,7 +290,7 @@ export function ScrollMorphHero() {
           </motion.p>
         </div>
 
-        <div className="pointer-events-none absolute top-1/2 z-0 hidden -translate-y-1/2 flex-col items-center justify-center px-5 text-center md:flex">
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-1/2 flex-col items-center justify-center px-5 text-center md:flex">
           <motion.h1
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
             animate={
@@ -301,7 +301,7 @@ export function ScrollMorphHero() {
             transition={{ duration: 1 }}
             className="flex w-[min(600px,64vw)] flex-col items-center leading-none"
           >
-            <span className="whitespace-nowrap font-sans text-[clamp(1.5rem,2.7vw,2.8rem)] font-semibold leading-none text-foreground">
+            <span className="whitespace-nowrap font-sans text-[clamp(1.45rem,2.05vw,2.15rem)] font-semibold leading-none text-foreground">
               Donner forme a votre visibilite.
             </span>
             <span className="mt-4 max-w-md text-xs font-bold uppercase leading-5 tracking-[0.18em] text-foreground/58">
@@ -367,7 +367,9 @@ export function ScrollMorphHero() {
                 opacity: 1,
               };
             } else {
-              const minDimension = Math.min(containerSize.width || 1, containerSize.height || 1);
+              const containerWidth = containerSize.width || 1;
+              const containerHeight = containerSize.height || 1;
+              const minDimension = Math.min(containerWidth, containerHeight);
               const circleRadius = Math.min(minDimension * (isMobile ? 0.26 : 0.34), isMobile ? 100 : 330);
               const circleAngle = (index / visibleHeroItems.length) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
@@ -377,9 +379,9 @@ export function ScrollMorphHero() {
                 rotation: circleAngle + 90,
               };
 
-              const baseRadius = Math.min(containerSize.width || 1, (containerSize.height || 1) * 1.55);
+              const baseRadius = Math.min(containerWidth, containerHeight * 1.55);
               const arcRadius = baseRadius * (isMobile ? 0.98 : 1.08);
-              const arcApexY = (containerSize.height || 1) * (isMobile ? 0.2 : 0.28);
+              const arcApexY = containerHeight * (isMobile ? 0.2 : 0.28);
               const arcCenterY = arcApexY + arcRadius;
               const spreadAngle = isMobile ? 92 : 132;
               const startAngle = -90 - spreadAngle / 2;
